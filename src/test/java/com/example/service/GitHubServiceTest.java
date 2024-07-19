@@ -1,12 +1,9 @@
-package com.example.unit.service;
+package com.example.service;
 
 import com.example.client.GitHubClient;
-import com.example.exception.UserException;
+import com.example.exception.GitHubServiceException;
 import com.example.model.User;
 import com.example.model.dto.UserDTO;
-import com.example.service.CalculationService;
-import com.example.service.DatabaseService;
-import com.example.service.GitHubService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,7 +59,7 @@ class GitHubServiceTest {
     void getUserData_UserNotFound_ThrowsException() {
         when(gitHubClient.getUser(anyString())).thenReturn(null);
 
-        assertThrows(UserException.class, () -> gitHubService.getUserData("nonexistentuser"));
+        assertThrows(GitHubServiceException.class, () -> gitHubService.getUserData("nonexistentuser"));
         verify(gitHubClient, times(1)).getUser("nonexistentuser");
         verify(calculationService, times(0)).calculate(any(User.class));
         verify(databaseService, times(0)).incrementRequestCount(anyString());
@@ -70,9 +67,9 @@ class GitHubServiceTest {
 
     @Test
     void getUserData_ResourceNotFoundException_ThrowsUserNotFoundException() {
-        when(gitHubClient.getUser(anyString())).thenThrow(new UserException(HttpStatus.NOT_FOUND, "Resource not found"));
+        when(gitHubClient.getUser(anyString())).thenThrow(new GitHubServiceException(HttpStatus.NOT_FOUND, "Resource not found"));
 
-        assertThrows(UserException.class, () -> gitHubService.getUserData("testuser"));
+        assertThrows(GitHubServiceException.class, () -> gitHubService.getUserData("testuser"));
         verify(gitHubClient, times(1)).getUser("testuser");
         verify(calculationService, times(0)).calculate(any(User.class));
         verify(databaseService, times(0)).incrementRequestCount(anyString());

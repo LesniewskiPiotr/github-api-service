@@ -1,7 +1,6 @@
-package com.example.unit.controller;
+package com.example.controller;
 
-import com.example.controller.UserController;
-import com.example.exception.UserException;
+import com.example.exception.GitHubServiceException;
 import com.example.model.dto.UserDTO;
 import com.example.service.GitHubService;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,7 +50,7 @@ public class UserControllerTest {
     public void testGetUser_notFound() throws Exception {
         String login = "testUser";
 
-        when(gitHubService.getUserData(login)).thenThrow(new UserException(HttpStatus.NOT_FOUND, "User not found"));
+        when(gitHubService.getUserData(login)).thenThrow(new GitHubServiceException(HttpStatus.NOT_FOUND, "User not found"));
 
         mockMvc.perform(get("/users/{login}", login)
                         .contentType(MediaType.APPLICATION_JSON))

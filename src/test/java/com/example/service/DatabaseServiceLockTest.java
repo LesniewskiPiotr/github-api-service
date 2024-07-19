@@ -1,4 +1,4 @@
-package com.example.integration;
+package com.example.service;
 
 import com.example.model.RequestCount;
 import com.example.repository.RequestCountRepository;

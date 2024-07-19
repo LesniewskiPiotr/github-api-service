@@ -1,4 +1,4 @@
-package com.example.unit.service;
+package com.example.service;
 
 import com.example.model.User;
 import com.example.service.CalculationService;
