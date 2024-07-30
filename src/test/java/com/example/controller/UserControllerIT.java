@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.exception.ErrorResponse;
 import com.example.model.RequestCount;
 import com.example.repository.RequestCountRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,7 +57,7 @@ public class UserControllerIT {
         mockMvc.perform(get("/users/{login}", login)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(content().string("User not found for login: nonexistentUser"));
+                .andExpect(content().string("{\"message\":\"Resource not found\",\"status\":\"404\"}"));
 
         Optional<RequestCount> requestCount = requestCountRepository.findById(login);
         assertFalse(requestCount.isPresent());
